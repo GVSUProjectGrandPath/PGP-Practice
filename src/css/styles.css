@@ -480,8 +480,8 @@ body::-webkit-scrollbar {
   width: .5%;
   height: 97%;
   background-color: #FEDB04; /* Color for the middle line */
-  
 }
+
 #topper-for-line {
   position: absolute;
   left: -2.25vw;
