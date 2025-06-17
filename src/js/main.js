@@ -1,4 +1,5 @@
 let currentQuestionIndex = 0; // Tracks the current question index
+let selectedAnswers = []; // array for selected answers
 let totalPoints = {
     "saver": 0,
     "spender": 0,
@@ -25,6 +26,21 @@ document.addEventListener('DOMContentLoaded', () => {
         quizContainer.style.display = 'flex';
         loadQuestion(currentQuestionIndex); // Load the first question
     });
+       //backbutton
+       const backButton = document.getElementById('back-button');
+       backButton.addEventListener('click', () => {
+       if (currentQuestionIndex > 0) {
+           currentQuestionIndex--;
+           loadQuestion(currentQuestionIndex);
+       } else {
+           // Return to welcome screen if on first question
+           quizContainer.style.display = 'none';
+           welcomeScreen.style.display = 'flex';
+           document.querySelectorAll('.answer-button').forEach(btn => btn.classList.remove('active'));
+  
+       }
+       });
+       //backbutton
 
     document.getElementById('restart-button').addEventListener('click', restartQuiz);
 
@@ -65,19 +81,43 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('answer-n').value = "n";
         document.getElementById('answer-d').value = "d";
         document.getElementById('answer-sd').value = "sd";
+        // Clear any previously active buttons
+        document.querySelectorAll('.answer-button').forEach(btn => btn.classList.remove('active'));
+
+        // Highlight the previously selected answer if it exists
+        const selected = selectedAnswers[index];
+        if (selected) {
+            const button = document.querySelector(`.answer-button[value="${selected}"]`);
+            if (button) button.classList.add('active');
+        }
     }
 
     // Records the answer and updates the total points
     function recordAnswer(answer) {
         const question = questions[currentQuestionIndex];
-        const points = question.points[answer];
-
-        for (const key in points) {
-            if (totalPoints.hasOwnProperty(key)) {
-                totalPoints[key] += points[key];
+    
+        // If a previous answer exists for this question, subtract its points first
+        const previousAnswer = selectedAnswers[currentQuestionIndex];
+        if (previousAnswer) {
+            const prevPoints = question.points[previousAnswer];
+            for (const key in prevPoints) {
+                if (totalPoints.hasOwnProperty(key)) {
+                    totalPoints[key] -= prevPoints[key]; // Subtract old points
+                }
             }
         }
-
+    
+        // Save the new selected answer
+        selectedAnswers[currentQuestionIndex] = answer;
+    
+        // Add new points
+        const newPoints = question.points[answer];
+        for (const key in newPoints) {
+            if (totalPoints.hasOwnProperty(key)) {
+                totalPoints[key] += newPoints[key];
+            }
+        }
+    
         currentQuestionIndex++;
         if (currentQuestionIndex < questions.length) {
             loadQuestion(currentQuestionIndex);
@@ -104,6 +144,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const personalityData = personalitiesData.descriptions[personalityType];
 
         document.getElementById('question-container').style.display = 'none';
+        //display none when result page is shown.
+        document.getElementById('back-button').style.display = 'none';
         document.getElementById('result-container').style.display = 'block';
 
         document.getElementById('answers').style.display = 'none';
@@ -149,8 +191,7 @@ document.addEventListener('DOMContentLoaded', () => {
             };
 
             if (type === personalityType) {
-                button.classList.add('active');
-                button.innerHTML = `${capitalize(animalName)}: ${percentage.toFixed(2)}% ${activeSymbol}`;
+                button.classList.add('largest-button'); // Highlight the largest button
             }
 
             resultsContainer.appendChild(button);
@@ -388,6 +429,4 @@ document.addEventListener('DOMContentLoaded', () => {
     document.addEventListener('keyup', (event) => {
     delete pressedKeys[event.key];
     });
-    
 });
-

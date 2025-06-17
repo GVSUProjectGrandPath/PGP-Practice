@@ -494,7 +494,6 @@ body::-webkit-scrollbar {
 #topper-for-line:last-child {
   bottom: -2%;
   transform: rotate(180deg);
-}
 
 #description-image,
 #disadvantages-image,
@@ -708,3 +707,31 @@ body::-webkit-scrollbar {
     display: none;
   }
 }
+
+/* p start */
+}
+.back-button {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  background-color: transparent;
+  border: 2px solid #5bc2e7;
+  color: #5bc2e7;
+  padding: 8px 16px;
+  font-size: 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-family: 'Orbitron', sans-serif;
+  /* font-family: 'Jura', sans-serif; */
+  transition: 0.2s;
+}
+
+.back-button:hover {
+  background-color: #5bc2e7;
+  color: #000;
+}
+.answer-button.active {
+  background-color: #FEDB04;
+}
+/* p ends */
+

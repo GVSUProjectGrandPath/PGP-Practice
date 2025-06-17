@@ -505,7 +505,7 @@ const questions = [
   },
   {
     "id": 15,
-    "value": "I get really upset when I lose money, so I try to make it back quickly so I feel better.",
+    "value": "When I lose money, it really gets me down and messes with my emotions and/or thoughts. I feel the urge to bounce back fast from these losses, not just for my money but for my mental health too.",
     "points": {
       "sa": {
         "gambler": 8

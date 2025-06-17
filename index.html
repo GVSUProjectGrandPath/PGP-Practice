@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <title>Money Personality Quiz</title>
     <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
@@ -9,7 +8,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Jura:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link rel="stylesheet" href="\src\css\styles.css">
-
+  
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <meta charset="UTF-8">
@@ -17,6 +16,7 @@
 
 <body>
     <div id="video-container">
+        <!-- <video autoplay muted loop playsinline id="background-video"> -->
         <video autoplay muted loop id="background-video">
             <source src="/src/assets/movingStars.mp4" type="video/mp4">
             Your browser does not support the video tag.
@@ -31,6 +31,9 @@
     </div>
 
     <div id="quiz-container" style="display: none;">
+         <!-- pushpa start -->
+         <button id="back-button" class="back-button">← Back</button>
+         <!-- pushpa ends -->
         <div id="progress-container">
             <div id="progress-bar"></div>
         </div>
@@ -44,6 +47,9 @@
             <button class="answer-button" id="answer-d" value="d">Disagree</button>
             <button class="answer-button" id="answer-sd" value="sd">Strongly Disagree</button>
         </div>
+
+
+        
         <div id="result-container" style="display: none;">
             <div id="result-grid">
                 <p id="result"></p>
@@ -199,6 +205,9 @@
     <script src="/src/js/personalities.js"></script>
     <script src="/src/js/questions.js"></script>
     <script src="/src/js/main.js"></script>
+     <!-- pushpa starts-->
+     <script src="/src/js/back.js"></script>
+     <!-- pushpa ends -->
 </body>
 
 </html>
