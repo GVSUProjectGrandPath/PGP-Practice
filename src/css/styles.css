@@ -2,17 +2,19 @@ html, body {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100%;
-  width: 100%;
+  height: 100dvh;
+  width: 100vw;
+  max-width: 100%;
   color: #ffffff;
   font-family: 'Jura', sans-serif; /* or 'Audiowide', sans-serif */
   overflow-y: scroll; /* Enable vertical scrolling */
-  overflow-x: hidden; /* Prevent horizontal scrolling */
+  overflow-x: scroll; /* Prevent horizontal scrolling */
   -webkit-overflow-scrolling: touch; /* Smooth scrolling on touch devices */
   scrollbar-width: none; /* Firefox: Hide scrollbars */
 }
 html {
   overflow-y: scroll; /* Enable vertical scrolling */
+  overflow-x: hidden;
 }
 
 body::-webkit-scrollbar {
@@ -27,6 +29,7 @@ body::-webkit-scrollbar {
   width: 100%;
   height: 100%;
   overflow: hidden;
+  /* object-fit: cover; */
   z-index: -1; /* Make sure video is behind other content */
 }
 #background-video {
@@ -41,13 +44,10 @@ body::-webkit-scrollbar {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 100vh; /* Full viewport height */
+  height: 100dvh; /* Full viewport height */
   width: 100vw; /* Full viewport width */
-  padding: 20px;
+  max-width: 100%;
   margin: auto;
-  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
-  color: #ffffff; 
-  border-radius: 20px;
   z-index: 1; /* Ensure content is above the video */
 }
 
@@ -62,17 +62,16 @@ body::-webkit-scrollbar {
 }
 
 #logo-image {
-  height: 10vh;
+  height: 10dvh;
   width: auto;
-  border-radius: 3vh;
+  border-radius: 3dvh;
   background-color: white;
   z-index: 1; /* Ensure text is above the GIF background */
 }
 
 #hero-text{
   margin-bottom: 0; 
-  margin-top: 15px;
-  font-size: 7vh;
+  font-size: 7dvh;
   font-weight: bold;
   color: #FEDB04;
   text-shadow: 
@@ -84,7 +83,7 @@ body::-webkit-scrollbar {
 }
 
 #welcome-text {
-  font-size: 5vh;
+  font-size: 5dvh;
   font-weight: bold;
   width: 70%; /* Set the width to 30% */
   text-align: center;
@@ -101,14 +100,14 @@ body::-webkit-scrollbar {
 .start-button { 
   margin-top: 10px;
   padding: 2% 2%;
-  font-size: 3vh;
+  font-size: 3dvh;
   font-family: 'Jura', sans-serif; /* or 'Audiowide', sans-serif */
   font-weight: bold;
   background-color: #5bc2e7;
   color: black;
   border-top: 1vmin solid #FEDB04;    /* Small border on the top */
   border-right: 2vmin solid #FEDB04;  /* Same size border on the right */
-  border-bottom: 4vmin solid #FEDB04; /* Larger border on the bottom */
+  border-bottom: 3vmin solid #FEDB04; /* Larger border on the bottom */
   border-left: 2vmin solid #FEDB04;   /* Same size border on the left */
   border-radius: 4vmin;             /* Optional: rounded corners */
   cursor: pointer;
@@ -126,11 +125,11 @@ body::-webkit-scrollbar {
 
 #progress-container {
   position: fixed;
-  top: 10%;
+  top: 6.5vw;
   width: 90%;
   height: 2.5%;
   background-color:#5BC2E7;
-  border-radius: 2vh;
+  border-radius: 2dvh;
   overflow: hidden;
   z-index: 2; /* Ensure it's on top */
 }
@@ -147,16 +146,39 @@ body::-webkit-scrollbar {
   width: 90%; /* Adjust this value as needed */
   top: 50%; /* Center vertically */
   left: 50%;
-  margin-bottom: 40vh;
+  margin-bottom: 40dvh;
   text-align: center; /* Center text within container */
   transform: translate(-50%, -50%); /* Center horizontally */
   z-index: 1; /* Ensure it’s behind the progress bar */
 }
 
 #question-text {
-  font-size: 5vh;
+  font-size: 5dvh;
   font-weight: bold;
   color: #ffffff;
+}
+
+.back-button {
+  position: absolute;
+  top: 2vw;
+  left: 1vw;
+  padding: 1vh 2%;
+  font-size: 1.5vw;
+  border-radius: 2dvh;
+  cursor: pointer;
+  font-family: 'Orbitron', sans-serif;
+  background-color: transparent;
+  border: 2px solid #5bc2e7;
+  color: #5bc2e7;
+  transition: 0.2s;
+}
+
+.back-button:hover {
+  background-color: #5bc2e7;
+  color: #000;
+}
+.answer-button.active {
+  background-color: #FEDB04;
 }
 
 #answers {
@@ -179,7 +201,7 @@ body::-webkit-scrollbar {
   text-align: center;
   word-spacing: 100vw;
   margin: 1%;
-  padding: 3vh;
+  padding: 3dvh;
   border: none;
   border-radius: 2vw;
   cursor: pointer;
@@ -194,21 +216,28 @@ body::-webkit-scrollbar {
   background-color: #54c9cd;
 }
 
+#submitBtn.mobile-click2:active {
+  background-color: #FEDB04
+}
+
 #feedback-popup {
   position: fixed;
   display: none; /* Hidden by default */
-  width: 80%; /* Slightly wider for better spacing */
-  height: 80%;
   top: 50%;
   left: 50%;
-  padding: 20px;
-  background-color: rgb(46, 101, 103); /* Match the form background */
+  transform: translate(-50%, -50%);
+  width: 90%; /* Slightly wider for better spacing */
+  max-width: 400px;
+  max-height: 72%; /* Limit the height to allow scrolling */
+  background-color: black; /* Match the form background */
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
   border-radius: 20px;
   overflow-y: scroll; /* Enable vertical scrolling */
   scrollbar-width: none; /* Hide scrollbar in Firefox */
-  transform: translate(-50%, -50%);
-  z-index: 999;
+  border-color: #FEDB04;
+  border-width: clamp(3px, 1.2vw, 8px);
+  border-style: solid;
+  z-index: 1001;
 }
 /* Hide scrollbar for WebKit-based browsers (Chrome, Safari) */
 #feedback-popup::-webkit-scrollbar {
@@ -218,69 +247,177 @@ body::-webkit-scrollbar {
   display: block; /* Show when active */
 }
 
+.unfilledForm {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 40px;
+  width: 200px;
+  background-color: white;
+  color: black;
+  font-family: 'Roboto';
+  font-weight: 600;
+  border-color: red;
+  border-radius: 20px;
+  border-width: clamp(5px, 1vw, 8px);
+  border-style: solid;
+}
+
+textarea.userInput {
+  background-color: white !important;
+  color: black !important;
+  height: 140px !important;
+  width: 85% !important;
+  border-radius: 10px !important;
+  border: 5px solid #FEDB04 !important;
+  /* Ensure consistent box sizing */
+  box-sizing: border-box !important;
+  /* padding: 10px !important; */
+  resize: none !important;
+  font-family: 'roboto';
+  font-weight: 500;
+}
+
+textarea.userInput:focus {
+  /* background-color: white !important; */
+  outline: none;
+  border: 5px solid #5BC2E7 !important;
+  /* box-shadow: 0 0 27px #FEDB04; */
+}
+
+.userInputArt {
+  background-color: white;
+  color: black;
+  height: 135px;
+  width: 75%;
+  border-radius: 10px;
+  border: 5px solid #5BC2E7;
+}
+
+.overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100dvh;
+  background-color: rgba(0, 0, 0, 0.5); /* or any desired shadow level */
+  z-index: 1000;
+  /* pointer-events: none; /* Setting to none allows whole page to be scrollable, not just survey */
+}
+
+.overlay.visible {
+  display: block;
+}
+
 #feedback-form {
   display: flex;
   flex-direction: column;
   justify-content: flex-start; /* Align items to the top */
   align-items: center;
-  margin-top: 20px;
+  gap: 10px;
+}
+
+.form-content {
   padding: 20px;
 }
 
+.testTopBar {
+  position: sticky;
+  /* margin: 0; */
+  top: 0;
+  background-color: #5BC2E7;
+  /* color: black; */
+  z-index: 100;
+  height: 30px;
+  width: 100%;
+  box-sizing: border-box;
+  cursor: default;
+  display: flex;
+  justify-content: space-between;
+  /* flex-direction: row; */
+  padding-top: 10px;
+  padding-bottom: 33px;
+  /* padding-left: 15px; */
+  padding-right: 15px;
+  border-bottom: 6px solid #FEDB04;
+}
+
+.surveyTitle {
+  color: black;
+  margin: 0;
+  margin-left: 5%;
+}
+
+.X-icon {
+  color: black;
+  font-size: x-large;
+  position: sticky;
+}
+
+#closeXbutton {
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}
+
 #feedback-form label {
-  margin-bottom: 2%;
-  font-size: 3vh;
+  margin-bottom: 10px;
+  font-size: 1.2rem;
   text-align: left; /* Align labels to the left for consistency */
   color: #ffffff;
 }
 
 #feedback-form div input[type="checkbox"] {
   display: block; /* Ensure the checkbox is on its own line */
-  margin-bottom: 1%; /* Add some space between checkboxes */
+  margin-bottom: 10px; /* Add some space between checkboxes */
 }
 
 #feedback-form div label {
   display: block; /* Make the label appear on its own line */
-  margin-bottom: 1%; /* Add spacing between labels */
+  margin-bottom: 10px; /* Add spacing between labels */
 }
 
 #feedback-form input,
 #feedback-form textarea,
 #feedback-form select {
   width: 100%;
+  max-width: 300px;
   padding: 10px;
-  margin-bottom: 2.5%; /* Reduced margin for better spacing */
+  margin-bottom: 15px; /* Reduced margin for better spacing */
   border: none;
-  border-radius: 4vh;
-  font-size: 3vw;
+  border-radius: 20px;
+  font-size: 1rem;
 }
 #feedback-form textarea {
-  width: 5%;
   height: 100px; /* Maintain height for comments */
-  height: auto;
 }
 
 #feedback-form button {
+  background-color: #FEDB04;
+  color: black;
   padding: 10px 20px;
   border: none;
-  border-radius: 4vh;
-  font-size: 3vw;
-  background-color: #e97c17;
-  color: #ffffff;
+  border-radius: 20px;
+  font-size: 1rem;
   cursor: pointer;
   transition: background-color 0.3s ease;
 }
-#feedback-form button:hover {
-  background-color: #2e6567;
+
+@media (hover: hover) { /* Ensures hover styles only apply on non-touch devices (Ex: laptop) */
+  #feedback-form button:hover {
+    background-color: #5bc2e7;
+  }
 }
+
 
 .feedback-button {
   font-family: 'Jura', sans-serif;
-  font-size: 3vh;
+  font-size: 3dvh;
   font-weight: bold;
-  padding: 1%;
+  padding: 1.5%;
   border: none;
-  border-radius: 4vh;
+  border-radius: 4dvh;
   background-color: #5bc2e7; /* Same color as answer buttons */
   color: black;
   cursor: pointer;
@@ -295,14 +432,14 @@ body::-webkit-scrollbar {
 
 .restart-button {
   font-family: 'Jura', sans-serif;
-  font-size: 3vh;
+  font-size: 3dvh;
   font-weight: bold;
-  padding: 1%;
+  padding: 1.5%;
   margin-top: 2.5%;
   margin-left: 1vw;
   margin-bottom: 2.5%;
   border: none;
-  border-radius: 4vh;
+  border-radius: 4dvh;
   background-color: #5bc2e7; /* Same color as answer buttons */
   color: black;
   cursor: pointer;
@@ -317,7 +454,9 @@ body::-webkit-scrollbar {
 
 #result-container {
   position: relative; /* Make sure it stays within its parent */
-  height: 100vh; /* Ensure it takes the full viewport height */
+  height: 100dvh; /* Ensure it takes the full viewport height */
+  width: 100vw;
+  max-width: 100%;
   font-family: 'Jura', sans-serif;
   text-align: center;
   color: #ffffff;
@@ -325,15 +464,15 @@ body::-webkit-scrollbar {
 
 #result-grid {
   display: grid;
-  height: 100vh;
-  width: 100vw;
+  height: 100%;
+  width: 100%;
 }
 
 #result {
   grid-column: 1;
   grid-row: 1;
   margin: 5%;
-  font-size: 8vh;
+  font-size: 8dvh;
   font-weight: bold;
   color: #ffffff;
 }
@@ -344,7 +483,7 @@ body::-webkit-scrollbar {
   align-self: center;
   grid-column: 2;
   grid-row: 1/4;
-  height: 90vh; /* Maintains the aspect ratio */
+  height: 90dvh; /* Maintains the aspect ratio */
   width: auto; /* Adjust the size of the image */
   max-width: 45vw;
 }
@@ -354,9 +493,9 @@ body::-webkit-scrollbar {
   grid-column: 1;
   grid-row: 2;
   margin: 5%;
-  margin-top: 15vh;
+  margin-top: 15dvh;
   display: table-cell;
-  font-size: 5vh;
+  font-size: 5dvh;
   color: #FEDB04;
 }
 
@@ -365,9 +504,9 @@ body::-webkit-scrollbar {
   justify-self: center;
   grid-column: 1;
   grid-row: 3;
-  margin-top: -15vh;
-  margin-left: 7.5vh;
-  font-size: 15vh;
+  margin-top: -15dvh;
+  margin-left: 7.5dvh;
+  font-size: 15dvh;
   color: #FEDB04;
   text-shadow: 
     -1.5px -1.5px 3px rgba(46, 101, 103, 0.5), /* Text shadow effect */
@@ -381,10 +520,9 @@ body::-webkit-scrollbar {
 #detailed-results {
   display: flex;
   flex-direction: column; /* Stack buttons vertically */
-  align-items: flex-start; /* Align items to the left */
-  width: 100vw; /* Ensure container takes full width */
+  align-items: start;
+  width: 100%; /* Ensure container takes full width */
   box-sizing: border-box; /* Include padding in width calculation */
-  margin-left: 30px;
   font-size: 1.8rem;
   color: black;
 }
@@ -398,9 +536,10 @@ body::-webkit-scrollbar {
   font-weight: normal;
   text-align: left;
   font-size: 2vw;
-  padding: 1%;
+  padding: 1.25%;
+  padding-left: 3%;
   margin-top: 1%;
-  margin-left: 30%; /* Add left margin */
+  margin-left: 10%;
   border: none;
   border-radius: 4vw;
   color: black;
@@ -418,6 +557,12 @@ body::-webkit-scrollbar {
 }
 #detailed-results button:nth-of-type(2) {
   animation: hintAnim 3s infinite ease-in-out;
+}
+#detailed-results button i,
+#detailed-results button span {
+ float: right;
+ font-size: larger;
+ margin-right: 3%;
 }
 
 /* Detailed Results Text Styles */
@@ -443,6 +588,7 @@ body::-webkit-scrollbar {
   border-radius: 1.5vmax;
   text-align: left;  /* Align text to the left */
   font-size: 1rem;   /* Reduce the font size */
+  font-weight: 500;
   line-height: 1.4;  /* Adjust line height for better readability */
 }
 
@@ -494,6 +640,7 @@ body::-webkit-scrollbar {
 #topper-for-line:last-child {
   bottom: -2%;
   transform: rotate(180deg);
+}
 
 #description-image,
 #disadvantages-image,
@@ -502,7 +649,7 @@ body::-webkit-scrollbar {
   width: 10%; /* Scale down the image width */
   height: auto; /* Maintain aspect ratio */
   left: 43%;
-  margin-top: -30px; /* Adjust this value to move arrows up or down if necessary */
+  margin-top: -2.5%; /* Adjust this value to move arrows up or down if necessary */
   transform: scaleX(-1);
   z-index: 1; /* Ensure it's above the line */
 }
@@ -512,8 +659,29 @@ body::-webkit-scrollbar {
   width: 10%; /* Scale down the image width */
   height: auto; /* Maintain aspect ratio */
   left: 47%;
-  margin-top: -30px; /* Adjust this value to move arrows up or down if necessary */
+  margin-top: -2.5%; /* Adjust this value to move arrows up or down if necessary */
   z-index: 1; /* Ensure it's above the line */
+}
+
+.resultButton-arrowContainer {
+  display: flex;
+  flex-direction: row;
+}
+
+.horizontal-arrow {
+  font-size: 3.5dvh;
+  color: #FEDB04;
+  text-shadow: 
+    -1.5px -1.5px 3px rgba(46, 101, 103, 0.5), /* Text shadow effect */
+    1.5px -1.5px 3px rgba(46, 101, 103, 0.5), 
+    -1.5px 1.5px 3px rgba(46, 101, 103, 0.5),
+    1.5px 1.5px 3px rgba(46, 101, 103, 0.5); 
+  bottom: 0%;
+  left: 50%;
+  position: inherit;
+  /* transform: translateX(-50%); */
+  animation: move-horizontalArrow 2s infinite ease-in-out;
+  z-index: 50;
 }
 
 @keyframes moveArrow {
@@ -543,195 +711,38 @@ body::-webkit-scrollbar {
   }
 }
 
-
-@media (orientation: portrait) {
-  #logo-image {
-    height: 15vw;
-    width: auto;
-    border-radius: 4vw;
+@keyframes pulseGlowEffect1 {
+  /* 0% {
+    transform: translateX(-50%) translateY(0);
+  } */
+  50% {
+    box-shadow: 0px 11px 10px rgb(0, 247, 255);
   }
-
-  #hero-text{
-    font-size: 10vw;
-  }
-
-  #welcome-text {
-    font-size: 7vw;
-  }
-
-  .start-button { 
-    font-size: 4vw;
-    cursor: pointer;
-    transition: background-color 0.3s ease, border-color 0.3s ease;
-    z-index: 1; /* Ensure button is above the GIF background */
-  }
-   
-  #question-container {
-    top: 40%;
-  }
-
-  #question-text {
-    font-size: 3vmax;
-  }
-
-  #answers {
-    display: flex;
-    flex-direction: column;
-    width: 90%;
-    align-items: center;
-    justify-items: center;
-    bottom: 5%; /* Remove fixed bottom position */
-    z-index: 1; /* Ensure it’s behind the progress bar */
-  }
-  .answer-button {
-    width: 100%; /* Full width for mobile */
-    max-width: none;
-    font-family: 'Jura', sans-serif;
-    font-size: 2vmax;
-    word-spacing: normal;
-    padding: 1.2vh;
-    margin-top: 1vh;
-    color: black;
-    background-color: #5bc2e7;
-    cursor: pointer;
-    border-radius: 5vmax;
-    transition: background-color 0.3s ease;
-  }
-  #answer-a {
-    width: 90%; 
-  }
-  #answer-n {
-    width: 80%; 
-  }
-  #answer-d {
-    width: 90%; 
-  }
-  .answer-button:active {
-    background-color: #5bc2e7
-     ; /* for mobile tap */
-  } 
-
-  @keyframes changeColor {
-    50% {
-      background-color: #FEDB04;
-    }
-    100% {
-      background-color: #5bc2e7;
-    }
-  }
-
-  .answer-button.mobile-click {
-    animation: changeColor 0.3s forwards;
-  }
-
-  #detailed-results{
-    position: relative;
-  }
-  #detailed-results button {
-    font-weight: bold;
-    font-size: 3vw;
-    padding: 2%;
-    padding-left: 3%;
-    margin-top: 2%;
-    margin-left: 20%; /* Add left margin */
-  }
-
-  .restart-button, .feedback-button {
-    font-size: 3vw;
-  }
-  #detailed-results, #result-text {
-    font-size: 5vh;
-  }
-  #detailed-results {
-    width: 50%; /* Ensure container takes full width */
-    margin-left: 0px;
-  }
-
-  #result-grid {
-    display: flex;
-    flex-direction: column;
-    justify-items: center;
-    align-content: center;
-  }
-
-  #result {
-    display: block;
-    font-weight: bold;
-    font-size: 4vh;
-    margin: 0;
-    margin-left: 5%;
-    margin-right: 5%;
-    color: #ffffff;
-  }
-
-  #result-animal-image {
-    justify-content: center;
-    height: 65vh; /* Maintains the aspect ratio */
-    width: auto; /* Adjust the size of the image */
-    max-width: 100%;
-    padding-top: 5vh; /* Adds some space above the image */
-  }
-
-  #scroll-down-text {
-    font-size: 4vh;
-    margin: 0;
-    margin-right: 0;
-    margin-left: 0;
-    margin-top: 5vh;
-    color: #FEDB04;
-  }
-
-  .scroll-arrow {
-    font-size: 7vh;
-    margin-top: 0;
-    margin-left: 4vh;
-  }
-  
-  #personality-details {
-    font-size: 1.3rem; /* Adjust font size for smaller screens */
-    padding: 15px; /* Adjust padding for smaller screens */
-    margin: 20px 0px; /* Margin around text */
-  }
-  .details-box {
-    width: 80%; /* Full width for mobile */
-    display: block; /* Stack vertically */
-    margin: 10px auto; /* Center horizontally */
-  }
-  .responsive-image {
-    display: none; /* Hide the images on mobile devices */
-  }
-  .details-tree {
-    display: none;
-  }
-  #topper-for-line {
-    display: none;
+  100% {
+    box-shadow: 0px 0px 0px rgba(84, 201, 205, 1);
   }
 }
 
-/* p start */
-}
-.back-button {
-  position: absolute;
-  top: 20px;
-  left: 20px;
-  background-color: transparent;
-  border: 2px solid #5bc2e7;
-  color: #5bc2e7;
-  padding: 8px 16px;
-  font-size: 1rem;
-  border-radius: 6px;
-  cursor: pointer;
-  font-family: 'Orbitron', sans-serif;
-  /* font-family: 'Jura', sans-serif; */
-  transition: 0.2s;
+@keyframes pulseGlowEffect2 {
+  /* 0% {
+    transform: translateX(-50%) translateY(0);
+  } */
+  50% {
+    box-shadow: 0px 0px 18px rgba(84, 201, 205, 1);
+  }
+  100% {
+    box-shadow: 0px 0px 0px rgba(84, 201, 205, 1);
+  }
 }
 
-.back-button:hover {
-  background-color: #5bc2e7;
-  color: #000;
+@keyframes pulseGlowEffect3 {
+  /* 0% {
+    transform: translateX(-50%) translateY(0);
+  } */
+  50% {
+    box-shadow: 18px 0px 9px rgba(84, 201, 205, 1);
+  }
+  100% {
+    box-shadow: 0px 0px 0px rgba(84, 201, 205, 1);
+  }
 }
-.answer-button.active {
-  background-color: #FEDB04;
-}
-/* p ends */
-

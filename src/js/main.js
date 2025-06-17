@@ -17,6 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const startButton = document.getElementById('start-button');
     const progressContainer = document.getElementById('progress-container');
     const progressBar = document.getElementById('progress-bar');
+    const bodyElement = document.body;
 
     const totalQuestions = questions.length;
 
@@ -47,6 +48,30 @@ document.addEventListener('DOMContentLoaded', () => {
     function MobileDevice() {
         return /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
     }
+    function handleOrientationChange() {
+        if (window.matchMedia('(orientation: portrait)').matches) {
+            document.getElementById('result-grid').style.height = '80%';
+            document.getElementById('result-grid').style.marginTop = '12.5%';
+            document.getElementById('detailed-results').style.marginTop = '5vh';
+            document.getElementById('result-animal-image').style.height = '50vh';
+        }
+        else {
+            document.getElementById('result-grid').style.height = '80%';
+            document.getElementById('result-grid').style.marginTop = '0%';
+            document.getElementById('detailed-results').style.marginTop = '5%';
+            document.getElementById('result-animal-image').style.height = '70%';
+        }
+    }
+
+    if (MobileDevice()) {
+        bodyElement.style.backgroundColor = 'black';
+        // Initial check
+        //handleOrientationChange();
+        
+        // Listen for orientation changes
+        //window.addEventListener('resize', handleOrientationChange);
+    }
+   
 
     // Sets up event listeners for answer buttons
     document.querySelectorAll('.answer-button').forEach(button => {
@@ -128,8 +153,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Displays the quiz results and personality type
     function showResults() {
-        progressContainer.style.display = 'none';
-
         let maxPoints = 0;
         let personalityType = '';
 
@@ -143,12 +166,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const personalityData = personalitiesData.descriptions[personalityType];
 
-        document.getElementById('question-container').style.display = 'none';
         //display none when result page is shown.
+        progressContainer.style.display = 'none';
+        document.getElementById('question-container').style.display = 'none';
         document.getElementById('back-button').style.display = 'none';
-        document.getElementById('result-container').style.display = 'block';
-
         document.getElementById('answers').style.display = 'none';
+        document.getElementById('result-container').style.display = 'block';
 
         document.getElementById('result').innerText = `You are most similar to the ${capitalize(personalityData.animal)}`;
 
@@ -163,39 +186,60 @@ document.addEventListener('DOMContentLoaded', () => {
             return { type, percentage };
         }).sort((a, b) => b.percentage - a.percentage);
 
-        // These can all be changed to adjust the buttons on the results page
-        const maxButtonWidth = 400;
-        const additionalLength = 100;
-        const scalingFactor = 3;
+        console.log(sortedTypes)
+
+
 
         // Create buttons for each personality type
+        let scaleFactor = 0;
+        let count = 0;
         sortedTypes.forEach(({ type, percentage }) => {
             const animalName = personalitiesData.descriptions[type].animal;
-
-            const buttonWidth = Math.max(30  + ((percentage / 100) * 70));
             const activeSymbol = '<i class="fa-solid fa-eye"></i>';
-            const inactiveSymbol = '<i class="fa-solid fa-eye-slash"></i>';
+            const inactiveSymbol = '';
+            //const click = '<span class="material-symbols-outlined">web_traffic</span>';
+            const click = ''
 
             const button = document.createElement('button');
             button.innerHTML = `${capitalize(animalName)}: ${percentage.toFixed(2)}% ${inactiveSymbol}`;
-            button.style.width = `${buttonWidth}vw`;
+
             button.onclick = () => {
                 showPersonalityDetails(type);
                 for (const btn of resultsContainer.children){
                     btn.classList.remove('active');
                     btn.style.animation = 'none';
                     btn.innerHTML = btn.innerHTML.replace(activeSymbol, inactiveSymbol);
+                    btn.innerHTML = btn.innerHTML.replace(click, inactiveSymbol);
                 }
                 button.classList.add('active');
                 button.innerHTML = `${capitalize(animalName)}: ${percentage.toFixed(2)}% ${activeSymbol}`;
             };
 
-            if (type === personalityType) {
-                button.classList.add('largest-button'); // Highlight the largest button
+            if (count === 1) {
+                button.innerHTML = `${capitalize(animalName)}: ${percentage.toFixed(2)}% ${click}`;
+                count = 2;
             }
 
-            resultsContainer.appendChild(button);
+            if (count === 0 && type === personalityType) {
+                button.classList.add('active');
+                button.innerHTML = `${capitalize(animalName)}: ${percentage.toFixed(2)}% ${activeSymbol}`;
+
+                count = 1;
+                scaleFactor = 100/percentage;
+                console.log(scaleFactor);
+                button.style.width = '100%';
+            }
+            else {
+                const buttonWidth = Math.max(30 + (percentage * scaleFactor * 0.5));
+                //const buttonWidth = Math.max(30  + ((percentage / 100) * 70));
+                console.log(buttonWidth);
+                button.style.width = `${buttonWidth}%`;
+            }
+
+            resultsContainer.appendChild(button)
         });
+
+        
 
         showPersonalityDetails(personalityType);
 
@@ -216,7 +260,7 @@ document.addEventListener('DOMContentLoaded', () => {
         };
 
         saveQuizResult(quizResult);  // Call the new function to save the result
-        saveResultToFirestore(quizResult);
+        // saveResultToFirestore(quizResult);
 
 
         function saveQuizResult(quizResult) {
@@ -232,27 +276,27 @@ document.addEventListener('DOMContentLoaded', () => {
                 .catch(err => console.error("❌ Error saving to backend:", err));
         }
 
-        function saveResultToFirestore(quizResult) {
-            const collectionName = "finlit_results"; // New Firestore collection
-            const docRef = db.collection(collectionName).doc(quizResult.personalityType);
+        // function saveResultToFirestore(quizResult) {
+        //     const collectionName = "finlit_results"; // New Firestore collection
+        //     const docRef = db.collection(collectionName).doc(quizResult.personalityType);
 
-            docRef.get().then((doc) => {
-                if (doc.exists) {
-                    return docRef.update({
-                        resultCount: firebase.firestore.FieldValue.increment(1)
-                    });
-                } else {
-                    return docRef.set({
-                        personalityType: quizResult.personalityType,
-                        resultCount: 1
-                    });
-                }
-            }).then(() => {
-                console.log(`✅ Firestore saved to ${collectionName}: ${quizResult.personalityType}`);
-            }).catch((error) => {
-                console.error("❌ Firestore error:", error);
-            });
-        }
+        //     docRef.get().then((doc) => {
+        //         if (doc.exists) {
+        //             return docRef.update({
+        //                 resultCount: firebase.firestore.FieldValue.increment(1)
+        //             });
+        //         } else {
+        //             return docRef.set({
+        //                 personalityType: quizResult.personalityType,
+        //                 resultCount: 1
+        //             });
+        //         }
+        //     }).then(() => {
+        //         console.log(`✅ Firestore saved to ${collectionName}: ${quizResult.personalityType}`);
+        //     }).catch((error) => {
+        //         console.error("❌ Firestore error:", error);
+        //     });
+        // }
 
 
         async function saveQuizResult(quizResult) {
@@ -282,17 +326,9 @@ document.addEventListener('DOMContentLoaded', () => {
             const feedbackData = {
                 shareHabits: event.target.shareHabits.value,
                 recommendSurvey: event.target.recommendSurvey.value,
-                comfortableTalking: event.target.comfortableTalking.value,
-                engagement: event.target.engagement.value,
                 resultsAccurate: event.target.resultsAccurate.value,
                 resultsHelpful: event.target.resultsHelpful.value,
-                interactivity: event.target.interactivity.value,
                 practicalSteps: event.target.practicalSteps.value,
-                additionalFeatures: Array.from(event.target.additionalFeatures)
-                    .filter(checkbox => checkbox.checked)
-                    .map(checkbox => checkbox.value),
-                saveResults: event.target.saveResults.value,
-                visualSatisfaction: event.target.visualSatisfaction.value,
                 timestamp: currentDate  // Add the current timestamp to the feedback data
             };
 
@@ -309,7 +345,17 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (response.ok) {
                     alert(result.message);
                 } else {
-                    alert(result.error);
+                    const unfilledLabels = []
+                    let keyNumber = 1
+                    for (const key in feedbackData) {
+                        if (feedbackData[key].length == 0) {
+                            unfilledLabels.push(`${keyNumber} | `)
+                        }
+                        keyNumber += 1
+                    }
+                    const unfilledLabels_str = unfilledLabels.join('')
+                    alert(`${result.error} Here are the unanswered questions: ${unfilledLabels_str}`);
+
                 }
             } catch (error) {
                 console.error('Error submitting feedback:', error);
@@ -347,6 +393,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 if (animalImages[personalityType]) {
                     resultAnimalImage.src = animalImages[personalityType];
+                    // resultAnimalImage.src = "/src/assets/animal_pngs/panda.png" // for testing purposes
                     resultAnimalImage.style.display = "block";
                 } else {
                     resultAnimalImage.style.display = "none";
@@ -368,15 +415,36 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     document.getElementById('feedback-button').addEventListener('click', function () {
-        document.getElementById('feedback-popup').classList.add('active');
+
+        let feedbackPopup = document.getElementById('feedback-popup');
+        const overlay = document.querySelector('.overlay');
+
+        feedbackPopup.classList.add('active');
+        overlay.classList.add('visible')
+        document.documentElement.style.overflow = 'hidden'; // html
+        document.body.style.overflow = 'hidden'; // body
     });
 
     document.addEventListener('click', function (event) {
         let feedbackPopup = document.getElementById('feedback-popup');
+        const overlay = document.querySelector('.overlay');
 
         if (!feedbackPopup.contains(event.target) && event.target.id !== 'feedback-button') {
             feedbackPopup.classList.remove('active');
+            overlay.classList.remove('visible')
+            document.documentElement.style.overflow = 'auto'; // html
+            document.body.style.overflow = 'auto'; // body
         }
+    });
+
+    document.getElementById('closeXbutton').addEventListener('click', function () {
+        let feedbackPopup = document.getElementById('feedback-popup');
+        const overlay = document.querySelector('.overlay');
+
+        feedbackPopup.classList.remove('active');
+        overlay.classList.remove('visible')
+        document.documentElement.style.overflow = 'auto'; // html
+        document.body.style.overflow = 'auto'; // body
     });
 
     // Restarts the quiz
@@ -405,28 +473,28 @@ document.addEventListener('DOMContentLoaded', () => {
     let pressedKeys = {};
 
     document.addEventListener('keydown', (event) => {
-    pressedKeys[event.key] = true;
-    // Check for specific key combinations
-    if (pressedKeys['s'] && pressedKeys['k']) {
-        if (welcomeScreen.style.display !== 'none') {
-            welcomeScreen.style.display = 'none';
-            quizContainer.style.display = 'flex';
-        }
-        totalPoints = {
-            "saver": 10,
-            "spender": 7,
-            "investor": 5,
-            "compulsive": 4,
-            "gambler": 3,
-            "debtor": 2,
-            "shopper": 1,
-            "indifferent": 1
-        };
-        showResults();
-    }
-    });
+        pressedKeys[event.key] = true;
+        // Check for specific key combinations
+        if (pressedKeys['s'] && pressedKeys['k']) {
+            if (welcomeScreen.style.display !== 'none') {
+                welcomeScreen.style.display = 'none';
+                quizContainer.style.display = 'flex';
+            }
+            totalPoints = {
+                "saver": 10,
+                "spender": 7,
+                "investor": 5,
+                "compulsive": 4,
+                "gambler": 3,
+                "debtor": 2,
+                "shopper": 1,
+                "indifferent": 1
+            };
+            showResults();
+            }
+        });
 
-    document.addEventListener('keyup', (event) => {
-    delete pressedKeys[event.key];
+        document.addEventListener('keyup', (event) => {
+            delete pressedKeys[event.key];
+        });
     });
-});

@@ -1,0 +1,202 @@
+@media (orientation: portrait) {
+  #logo-image {
+    height: 15vw;
+    width: auto;
+    border-radius: 4vw;
+  }
+
+  #hero-text{
+    font-size: 10vw;
+  }
+
+  #welcome-text {
+    font-size: 7vw;
+  }
+
+  .start-button { 
+    font-size: 4vw;
+    cursor: pointer;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+    z-index: 1; /* Ensure button is above the GIF background */
+  }
+   
+  #question-container {
+    top: 40%;
+  }
+
+  #question-text {
+    font-size: 3vmax;
+  }
+
+  #progress-container {
+    top: 10dvh;
+  }
+
+  .back-button {
+    position: absolute;
+    top: 3dvh;
+    left: 1vw;
+    padding: 1vh 2%;
+    font-size: 2dvh;
+  }
+
+  #answers {
+    display: flex;
+    flex-direction: column;
+    width: 90%;
+    align-items: center;
+    justify-items: center;
+    bottom: 5%; /* Remove fixed bottom position */
+    z-index: 1; /* Ensure it’s behind the progress bar */
+  }
+  .answer-button {
+    width: 100%; /* Full width for mobile */
+    max-width: none;
+    font-family: 'Jura', sans-serif;
+    font-size: 2dvh;
+    word-spacing: normal;
+    padding: 1.2dvh;
+    margin-top: 1dvh;
+    color: black;
+    background-color: #5bc2e7;
+    cursor: pointer;
+    border-radius: 5vmax;
+    transition: background-color 0.3s ease;
+    text-shadow: 0 0 0.75px rgba(0, 0, 0, 0.6);
+  }
+  #answer-a {
+    width: 90%; 
+  }
+  #answer-n {
+    width: 80%; 
+  }
+  #answer-d {
+    width: 90%; 
+  }
+  .answer-button:active {
+    background-color: #5bc2e7;
+    /* font-weight: bold; */
+     /* for mobile tap */
+  }  
+
+  @keyframes changeColor {
+    50% {
+      background-color: #FEDB04;
+    }
+    100% {
+      background-color: #5bc2e7;
+    }
+  }
+
+  @keyframes change_submitColor {
+    50% {
+      background-color: #5bc2e7;
+    }
+    100% {
+      background-color: #FEDB04;
+    }
+  }
+
+  .answer-button.mobile-click {
+    animation: changeColor 0.3s forwards;
+  }
+
+  #submitBtn.mobile-click2 {
+    animation: change_submitColor 0.3s forwards;
+  }
+  
+  #detailed-results{
+    position: relative;
+  }
+  #detailed-results button {
+    font-weight: bold;
+    font-size: 3vw;
+    padding: 2%;
+    padding-left: 3%;
+    margin-top: 2%;
+  }
+
+  .restart-button, .feedback-button {
+    font-size: 3vw;
+    padding: 3%;
+    padding-top: 4%;
+    padding-bottom: 4%;
+  }
+
+  #detailed-results, #result-text {
+    font-size: 5dvh;
+  }
+
+  #result {
+    font-size: 1.3rem;
+  }
+
+  #question-text, #result {
+    text-shadow: 0 0 1px rgb(255, 255, 255) /* trick to make text bold */
+  }
+
+  #detailed-results {
+    width: 100%; /* Ensure container takes full width */
+    margin-left: 0px;
+  }
+
+  #result-grid {
+    justify-items: center;
+    align-content: center;
+  }
+
+  #result {
+    font-size: 3dvh;
+    margin: 0;
+    margin-left: 5%;
+    margin-right: 5%;
+  }
+
+  #result-animal-image {
+    grid-column: 1;
+    grid-row: 2;
+    justify-content: center;
+    height: 65dvh; /* Maintains the aspect ratio */
+    width: auto; /* Adjust the size of the image */
+    max-width: 100%;
+    padding-top: 5dvh; /* Adds some space above the image */
+  }
+
+  #scroll-down-text {
+    grid-column: 1;
+    grid-row: 3;
+    font-size: 3dvh;
+    margin: 0;
+    margin-right: 0;
+    margin-left: 0;
+    margin-top: 5dvh;
+  }
+
+  .scroll-arrow {
+    grid-column: 1;
+    grid-row: 4;
+    font-size: 7dvh;
+    margin-top: 0;
+    margin-left: 4dvh;
+  }
+  
+  #personality-details {
+    font-size: 1.3rem; /* Adjust font size for smaller screens */
+    padding: 15px; /* Adjust padding for smaller screens */
+    margin: 20px 0%; /* Margin around text */
+  }
+  .details-box {
+    width: 90%; /* Full width for mobile */
+    display: block; /* Stack vertically */
+    margin: 10px auto; /* Center horizontally */
+  }
+  .responsive-image {
+    display: none; /* Hide the images on mobile devices */
+  }
+  .details-tree {
+    display: none;
+  }
+  #topper-for-line {
+    display: none;
+  }
+}
