@@ -161,6 +161,7 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('answers').style.display = 'none';
 
         document.getElementById('result').innerText = `You are most similar to the ${capitalize(personalityData.animal)}`;
+        new CircleType(document.getElementById('result')).radius(700);
 
         const total = getTotalPoints();
         const resultsContainer = document.getElementById('detailed-results');

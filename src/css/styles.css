@@ -902,10 +902,6 @@ textarea#userInput:focus {
     font-size: 5vh;
   }
 
-  #result {
-    font-size: 1.3rem;
-  }
-
   #question-text, #result {
     text-shadow: 0 0 1px rgb(255, 255, 255) /* trick to make text bold */
   }
@@ -925,7 +921,7 @@ textarea#userInput:focus {
   #result {
     display: block;
     font-weight: bold;
-    font-size: 4vh;
+    font-size: 5dvw;
     margin: 0;
     margin-left: 5%;
     margin-right: 5%;
